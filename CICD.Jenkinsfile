@@ -38,8 +38,7 @@ pipeline {
           deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
           description: "Deployment Version ${VERSION_TAG}",
           waitForCompletion: 'true',
-          ignoreApplicationStopFailures: 'false',
-          fileExistsBehavior: 'OVERWRITE'
+          ignoreApplicationStopFailures: 'false'
         )
         echo "${DEPLOY_ID}"
         }
