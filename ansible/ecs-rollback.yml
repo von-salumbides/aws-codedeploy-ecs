@@ -49,8 +49,8 @@
       region: "{{ aws_region }}"
     register: ecs_td_out
   - set_fact:
-      ecs_json: "{{ ecs_td_out.stdout | from_json() }}"
-  - debug: msg="{{ ecs_json.taskDefinitionArn[0] }}"
+      ecs_json: "{{ ecs_td_out.taskdefinition | from_json() }}"
+  - debug: msg="{{ ecs_json.taskDefinitionArn }}"
     ignore_errors: yes
 
   - name: 1.4 -- Artifact Appspec

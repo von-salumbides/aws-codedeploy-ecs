@@ -44,6 +44,6 @@ pkrbuild: pkrinit
 #         Ansible       #
 #########################
 playbook:
-	ansible-playbook ./ansible/ecs.yml -e aws_account=$(AWS_ACCOUNT_ID) -vv
+	ansible-playbook ./ansible/ecs.yml -e aws_account=$(AWS_ACCOUNT_ID) -vvv
 playbook-rollback:
-	ansible-playbook ./ansible/ecs-rollback.yml -e aws_account=$(AWS_ACCOUNT_ID) -vv
+	ansible-playbook ./ansible/ecs-rollback.yml -e aws_account=$(AWS_ACCOUNT_ID) -vvv
