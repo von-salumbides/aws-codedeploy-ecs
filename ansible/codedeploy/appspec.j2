@@ -10,3 +10,4 @@ Resources:
         CapacityProviderStrategy:
           - Base: {{ desired_count }}
             CapacityProvider: "FARGATE"
+            Weight: {{ desired_count }}
