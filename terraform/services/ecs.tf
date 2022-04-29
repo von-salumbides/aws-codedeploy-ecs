@@ -20,10 +20,10 @@ module "aws_ecs_service" {
   prod_traffic_route          = module.lb.listener_80_arn
   test_traffic_route          = module.lb.listener_8080_arn
   target_group_green = {
-    api = "${module.target_group_green.arn}"
+    api = "${module.target_group_green.name}"
   }
   target_group_blue = {
-    api = "${module.target_group_blue.arn}"
+    api = "${module.target_group_blue.name}"
   }
 }
 
