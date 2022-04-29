@@ -14,7 +14,7 @@
   - debug: msg="{{ td_details.taskDefinitionArns[0] }}"
     ignore_errors: yes
 
-  - name: 1.7 -- Create ECS Task Definition in {{ aws_env | upper }}
+  - name: 1.1 -- Create ECS Task Definition in {{ aws_env | upper }}
     ecs_taskdefinition:
       execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
       task_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
@@ -71,7 +71,7 @@
   - name: 1.6 -- Wait Deployment
     shell: aws deploy wait deployment-successful --deployment-id "{{ deploy_json.deploymentId }}"
 
-  - name: 1.6 -- Get Deployment
+  - name: 1.7 -- Get Deployment
     shell: aws deploy get-deployment --deployment-id "{{ deploy_json.deploymentId }}"
     register: deployment_status_out
   - set_fact:
