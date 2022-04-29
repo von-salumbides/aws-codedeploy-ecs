@@ -8,17 +8,17 @@ pipeline {
     ANSIBLE_FORCE_COLOR = true
   }
   stages {
-    stage("BUILD") {
-      steps {
-        withCredentials([gitUsernamePassword(credentialsId: 'von-salumbides',
-          gitToolName: 'git-tool')]) {
-          sh "make ${ANSIBLE_CMD}"
-        }
-        script {
-          currentBuild.displayName = "${ANSIBLE_CMD}"
-        }
-      }
-    }
+    // stage("BUILD") {
+    //   steps {
+    //     withCredentials([gitUsernamePassword(credentialsId: 'von-salumbides',
+    //       gitToolName: 'git-tool')]) {
+    //       sh "make ${ANSIBLE_CMD}"
+    //     }
+    //     script {
+    //       currentBuild.displayName = "${ANSIBLE_CMD}"
+    //     }
+    //   }
+    // }
     stage("DEPLOY") {
       environment {
         CODEDEPLOY_APP_NAME   = "devops-poc"
@@ -38,8 +38,7 @@ pipeline {
           deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
           description: "Deployment Version ${VERSION_TAG}",
           waitForCompletion: 'true',
-          ignoreApplicationStopFailures: 'false',
-          fileExistsBehavior: null
+          ignoreApplicationStopFailures: 'false'
         )
         echo "${DEPLOY_ID}"
         }
