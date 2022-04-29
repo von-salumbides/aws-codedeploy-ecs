@@ -74,3 +74,8 @@
     register: deployment_status_out
   - set_fact:
       deploy_status_json: "{{ deployment_status_out.stdout | from_json() }}"
+  - name: 1.8 -- Update Desired cpu_container
+    shell: aws ecs update-service \
+            --cluster "{{ aws_project }}-{{ aws_env }}" \
+            --service "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+            --desired-count "{{ desired_count }}"
