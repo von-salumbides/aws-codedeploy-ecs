@@ -81,10 +81,10 @@
 
   - name: 1.5 -- Create Deployment
     shell: aws deploy create-deployment \
-            --region "{{ aws_region }}" \
-            --application-name "{{ aws_project }}-{{ aws_env }}" \
-            --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
-            --revision "revisionType=S3,s3Location={bucket={{ s3_bucket }},key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}"
+            --region us-east-2 \
+            --application-name "{{ aws_project }}-{{ aws_region }}" \
+            --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_region }}" \
+            --s3-location bucket={{ s3_bucket }},bundleType=YAML,key=ansible/{{ aws_project }}-{{ service }}.yaml
     register: deployment_out
   - set_fact:
       deploy_json: "{{ deployment_out.stdout | from_json() }}"

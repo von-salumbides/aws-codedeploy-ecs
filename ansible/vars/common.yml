@@ -6,4 +6,4 @@ aws_project: 'devops'
 cpu_container: '256'
 mem_reserv: '512'
 desired_count: 1
-s3_bucket: 'devops-codedeploy-artifact'
+s3_bucket: "devops-codedeploy-artifact"
