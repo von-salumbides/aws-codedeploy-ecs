@@ -19,6 +19,7 @@ module "aws_ecs_service" {
   codedeploy_service_role_arn = module.iam_role.arn
   prod_traffic_route          = module.lb.listener_80_arn
   test_traffic_route          = module.lb.listener_8080_arn
+  target_group_green_arn      = module.target_group_green.arn
   target_group_green = {
     api = "${module.target_group_green.name}"
   }
