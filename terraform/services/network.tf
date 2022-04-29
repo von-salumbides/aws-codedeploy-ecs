@@ -58,12 +58,12 @@ module "listener_80" {
   config            = "RULES-GREEN"
   load_balancer_arn = module.lb.arn
   target-group = {
-    green = module.target-group-green.arn
+    green = module.target_group_green.arn
   }
   depends_on = [
     module.lb,
-    module.target-group-blue,
-    module.target-group-green
+    module.target_group_blue,
+    module.target_group_green
   ]
 }
 
@@ -73,11 +73,11 @@ module "listener_8080" {
   config            = "RULES-BLUE"
   load_balancer_arn = module.lb.arn
   target-group = {
-    blue = module.target-group-blue.arn
+    blue = module.target_group_blue.arn
   }
   depends_on = [
     module.lb,
-    module.target-group-blue,
-    module.target-group-green
+    module.target_group_blue,
+    module.target_group_green
   ]
 }
