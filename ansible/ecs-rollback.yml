@@ -43,6 +43,9 @@
       region: "{{ aws_region }}"
     register: ecs_td_details
   - debug: msg="{{ ecs_td_details }}"
+  - name: 1.5.1 -- Pause for 1 Minute
+    pause:
+      minutes: 1
 
   - name: 1.2 -- Artifact Appspec
     template: src=./codedeploy/appspec.j2 dest=./codedeploy/{{ aws_project }}-{{ service }}.yaml
