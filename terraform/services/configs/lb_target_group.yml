@@ -1,0 +1,22 @@
+TG-BLUE:
+  matcher: 200
+  target_type: "ip" 
+  target_port: 80 
+  target_protocol: "HTTP"
+  health_check_port: "traffic-port"
+  health_check_protocol: "HTTP" 
+  protocol_version: "HTTP1"
+  health_check_path: "/"
+  health_check_timeout: 10
+  health_check_interval: 60
+TG-GREEN:
+  matcher: 200
+  target_type: "ip" 
+  target_port: 80 
+  target_protocol: "HTTP"
+  protocol_version: "HTTP1"
+  health_check_port: "traffic-port"
+  health_check_protocol: "HTTP" 
+  health_check_path: "/"
+  health_check_timeout: 10
+  health_check_interval: 60

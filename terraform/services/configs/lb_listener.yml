@@ -1,0 +1,18 @@
+RULES-BLUE:
+  blue:
+    name: "api-blue"
+    priority: 100
+    path_pattern: # Null value will not create host_header rules
+      - "/*"
+      - "/"
+    host_header: # Null value will not create host_header rules
+      # - "blue.example.com"
+RULES-GREEN:
+  green:
+    name: "api-green"
+    priority: 200
+    path_pattern: # Null value will not create host_header rules
+      - "/*"
+      - "/"
+    host_header:  # Null value will not create host_header rules
+      # - "green.example.com"

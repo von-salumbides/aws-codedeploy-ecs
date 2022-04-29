@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: {{ td_details.taskDefinitionArns[0] }}
+        LoadBalancerInfo:
+          ContainerName: "devops-api-poc"
+          ContainerPort: 80

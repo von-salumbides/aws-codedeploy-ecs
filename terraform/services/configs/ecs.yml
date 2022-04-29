@@ -1,0 +1,13 @@
+ECS:
+  api:
+    cpu: 256
+    memory: 512
+    container_port: 80
+    network_mode: awsvpc
+    assign_public_ip: true
+    deployment_config_name: "CodeDeployDefault.ECSAllAtOnce"
+    termination_wait_time_in_minutes: 5
+    deployment_ready_option: 
+      action_on_timeout: "STOP_DEPLOYMENT"
+      wait_time_in_minutes: 60
+    

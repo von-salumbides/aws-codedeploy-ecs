@@ -1,0 +1,67 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - "vars/common.yml"
+  tasks:
+  - name: 1.5 -- Look up ECS Task Definition in {{ aws_env | upper }}
+    shell: aws ecs list-task-definitions \
+          --family-prefix "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
+          --region "{{ aws_region }}"
+    register: td_details_cmd_out
+  - set_fact:
+      td_details: "{{ td_details_cmd_out.stdout | from_json() }}"
+  - debug: msg="{{ td_details.taskDefinitionArns[0] }}"
+    ignore_errors: yes
+
+  # - name: 1.6 -- Deregister ECS Task Definition in {{ aws_env | upper }}
+  #   shell: aws ecs deregister-task-definition \
+  #         --task-definition "{{ td_details.taskDefinitionArns[0] }}" \
+  #         --region "{{ aws_region }}"
+  #   ignore_errors: yes
+
+  # - name: 1.7 -- Create ECS Task Definition in {{ aws_env | upper }}
+  #   ecs_taskdefinition:
+  #     execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/devops-ecs-role-poc"
+  #     task_role_arn: "arn:aws:iam::{{ aws_account }}:role/devops-ecs-role-poc"
+  #     launch_type: "FARGATE"
+  #     cpu: "{{ cpu_container }}"
+  #     memory: "{{ mem_reserv }}"
+  #     network_mode: "awsvpc"
+  #     containers:
+  #       - name: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+  #         cpu: "{{ cpu_container }}"
+  #         memoryReservation: "{{ mem_reserv }}"
+  #         essential: true
+  #         image: "{{ aws_account }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ aws_project }}-{{ service }}-{{ aws_env }}:{{ branch_tag }}"
+  #         logConfiguration:
+  #           logDriver: "awslogs"
+  #           options:
+  #             awslogs-group: "/ecs/devops-poc"
+  #             awslogs-create-group: "true"
+  #             awslogs-region: "{{ aws_region }}"
+  #             awslogs-stream-prefix: "devops-poc"
+  #         portMappings:
+  #         - containerPort: 80
+  #           protocol: "tcp"
+  #     family: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+  #     state: "present"
+  #     region: "{{ aws_region }}"
+  #   register: ecs_td_details
+  # - debug: msg="{{ ecs_td_details }}"
+
+  - name: show templating results
+    debug:
+      msg: "{{ lookup('template', './codedeploy/appspec.j2') }}"
+  - name: create some file
+    template: src=./codedeploy/appspec.j2 dest=./codedeploy/{{ aws_project }}-{{ service }}.yaml
+    delegate_to: localhost
+  - name: Remove Appspec Locally
+    file: path=./codedeploy/{{ aws_project }}-{{ service }}.yaml state=absent
+
+  # - name: Create Deployment
+  #   shell: aws deploy create-deployment \
+  #           --region "us-east-2" \
+  #           --application-name devops-poc \
+  #           --deployment-group-name devops-poc \
+  #           --revision revisionType=S3,s3Location={bucket=devops-poc-bucket,key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}
