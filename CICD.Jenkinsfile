@@ -4,6 +4,9 @@ pipeline {
     ansiColor("xterm")
     withAWS(credentials: 'AWS_ACCESS_KEY_ID', region: 'us-east-2')
   }
+  environment {
+    ANSIBLE_FORCE_COLOR = true
+  }
   stages {
     stage("BUILD") {
       steps {
