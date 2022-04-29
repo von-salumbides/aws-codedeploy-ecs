@@ -6,7 +6,15 @@ pipeline {
   }
   stages {
     stage("BUILD") {
-      println("building artifact")
+      steps {
+        withCredentials([gitUsernamePassword(credentialsId: 'von-salumbides',
+          gitToolName: 'git-tool')]) {
+          sh "make ${ANSIBLE_CMD}"
+        }
+        script {
+          currentBuild.displayName = "${ANSIBLE_CMD}"
+        }
+      }
     }
     stage("DEPLOY") {
       println("deploying")

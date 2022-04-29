@@ -3,6 +3,7 @@
   gather_facts: no
   vars_files:
     - "vars/common.yml"
+    - "vars/services.yml"
   tasks:
   - name: 1.1 -- Log In to ECS Repository
     shell: "aws ecr get-login-password --region {{ aws_region }} | docker login --username AWS --password-stdin {{ aws_account }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
@@ -35,8 +36,8 @@
 
   - name: 1.7 -- Create ECS Task Definition in {{ aws_env | upper }}
     ecs_taskdefinition:
-      execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/devops-ecs-role-poc"
-      task_role_arn: "arn:aws:iam::{{ aws_account }}:role/devops-ecs-role-poc"
+      execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
+      task_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
       launch_type: "FARGATE"
       cpu: "{{ cpu_container }}"
       memory: "{{ mem_reserv }}"
@@ -50,10 +51,10 @@
           logConfiguration:
             logDriver: "awslogs"
             options:
-              awslogs-group: "/ecs/devops-poc"
+              awslogs-group: "/ecs/{{ aws_project }}-{{ service }}-{{ aws_env }}"
               awslogs-create-group: "true"
               awslogs-region: "{{ aws_region }}"
-              awslogs-stream-prefix: "devops-poc"
+              awslogs-stream-prefix: "{{ aws_project }}-{{ service }}"
           portMappings:
           - containerPort: 80
             protocol: "tcp"

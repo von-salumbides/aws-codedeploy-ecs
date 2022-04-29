@@ -5,4 +5,5 @@ branch_tag: "default"
 aws_project: "devops"
 cpu_container: 256
 mem_reserv: 512
-aws_task_role: 
+desired_count: 1
+s3_bucket: "devops-codedeploy-artifact"
