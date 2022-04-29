@@ -61,10 +61,10 @@
       family: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
       state: "present"
       region: "{{ aws_region }}"
-    register: ecs_td_details
+    register: ecs_td_out
   - set_fact:
-      ecs_json: "{{ ecs_td_details.stdout | from_json() }}"
-  - debug: msg="{{ ecs_json.taskDefinitionArns[0] }}"
+      ecs_json: "{{ ecs_td_out.stdout | from_json() }}"
+  - debug: msg="{{ ecs_json.taskDefinitionArn[0] }}"
     ignore_errors: yes
   
   - name: 1.2 -- Artifact Appspec
