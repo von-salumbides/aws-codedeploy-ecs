@@ -56,9 +56,9 @@
   - name: 1.4 -- Remove Appspec Locally
     file: path=./codedeploy/{{ aws_project }}-{{ service }}.yaml state=absent
 
-  # - name: Create Deployment
-  #   shell: aws deploy create-deployment \
-  #           --region "us-east-2" \
-  #           --application-name devops-poc \
-  #           --deployment-group-name devops-poc \
-  #           --revision revisionType=S3,s3Location={bucket=devops-poc-bucket,key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}
+  - name: Create Deployment
+    shell: aws deploy create-deployment \
+            --region "{{ aws_region }}" \
+            --application-name devops-poc \
+            --deployment-group-name devops-poc \
+            --revision "revisionType=S3,s3Location={bucket={{ s3_bucket }},key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}"
