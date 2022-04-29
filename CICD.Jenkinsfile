@@ -32,7 +32,7 @@ pipeline {
           def DEPLOY_ID = createDeployment(
           s3Bucket: "${CODEDEPLOY_S3_BUCKET}",
           s3Key: "ansible/devops-api.yaml",
-          s3BundleType: 'YAML', // [Valid values: tar | tgz | zip | YAML | JSON]
+          s3BundleType: 'YAML', 
           applicationName: "${CODEDEPLOY_APP_NAME}",
           deploymentGroupName: "${CODEDEPLOY_GROUP_NAME}",
           deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
