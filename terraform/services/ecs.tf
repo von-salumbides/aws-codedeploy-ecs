@@ -5,7 +5,7 @@ module "ecs_cluster" {
 }
 
 module "aws_ecs_service" {
-  source                      = "git::https://github.com/von-salumbides/terraforn-module.git//aws-ecs-service"
+  source                      = "git::https://github.com/von-salumbides/terraform-module.git//aws-ecs-service"
   config                      = "ECS"
   env                         = var.env
   project                     = var.project
