@@ -7,3 +7,7 @@ Resources:
         LoadBalancerInfo:
           ContainerName: "devops-api-poc"
           ContainerPort: 80
+        CapacityProviderStrategy:
+          - Base: 0
+            CapacityProvider: "FARGATE"
+            Weight: {{ desired_count }}
