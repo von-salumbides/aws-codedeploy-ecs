@@ -20,8 +20,27 @@ pipeline {
       }
     }
     stage("DEPLOY") {
+      environment {
+        CODEDEPLOY_APP_NAME   = "devops-poc"
+        CODEDEPLOY_GROUP_NAME = "devops-api-poc"
+        CODEDEPLOY_S3_BUCKET  = "devops-codedeploy-artifact"
+        AWS_ACCOUNT_ID        = "${AWS_ACCOUNT_ID}"
+        AWS_ACCOUNT_ROLE      = "${AWS_ACCOUNT_ROLE}"
+      }
       steps {
-        println("deploying")
+        def DEPLOY_ID = createDeployment(
+          s3Bucket: "${CODEDEPLOY_S3_BUCKET}",
+          s3Key: "ansible/devops-api.yaml",
+          s3BundleType: 'YAML', // [Valid values: tar | tgz | zip | YAML | JSON]
+          applicationName: "${CODEDEPLOY_APP_NAME}",
+          deploymentGroupName: "${CODEDEPLOY_GROUP_NAME}",
+          deploymentConfigName: 'CodeDeployDefault.AllAtOnce',
+          description: "Deployment Version ${VERSION_TAG}",
+          waitForCompletion: 'true',
+          ignoreApplicationStopFailures: 'false',
+          fileExistsBehavior: 'OVERWRITE'
+        )
+        echo "${DEPLOY_ID}"
       }
     }
   }
