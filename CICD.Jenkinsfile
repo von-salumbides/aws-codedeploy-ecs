@@ -28,7 +28,8 @@ pipeline {
         AWS_ACCOUNT_ROLE      = "${AWS_ACCOUNT_ROLE}"
       }
       steps {
-        def DEPLOY_ID = createDeployment(
+        script {
+          def DEPLOY_ID = createDeployment(
           s3Bucket: "${CODEDEPLOY_S3_BUCKET}",
           s3Key: "ansible/devops-api.yaml",
           s3BundleType: 'YAML', // [Valid values: tar | tgz | zip | YAML | JSON]
@@ -41,6 +42,7 @@ pipeline {
           fileExistsBehavior: 'OVERWRITE'
         )
         echo "${DEPLOY_ID}"
+        }
       }
     }
   }
