@@ -75,6 +75,6 @@
     shell: aws deploy get-deployment --deployment-id "{{ deploy_json.deploymentId }}"
     register: deployment_status_out
   - set_fact:
-      deploy_out_json: "{{ deployment_status_out.stdout | from_json() }}"
-  - debug: msg="{{ deploy_out_json }}"
+      deploy_status_json: "{{ deployment_status_out.stdout | from_json() }}"
+  - debug: msg="{{ deploy_status_json }}"
     ignore_errors: yes
