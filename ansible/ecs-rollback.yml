@@ -68,8 +68,8 @@
   - name: 1.5 -- Create Deployment
     shell: aws deploy create-deployment \
             --region us-east-2 \
-            --application-name "{{ aws_project }}-{{ aws_region }}" \
-            --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_region }}" \
+            --application-name "{{ aws_project }}-{{ aws_env }}" \
+            --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
             --s3-location bucket={{ s3_bucket }},bundleType=YAML,key=ansible/{{ aws_project }}-{{ service }}.yaml
     register: deployment_out
   - set_fact:
