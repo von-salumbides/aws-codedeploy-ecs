@@ -63,4 +63,6 @@
             --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
             --revision "revisionType=S3,s3Location={bucket={{ s3_bucket }},key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}"
     register: deployment_id
-  - debug: msg="{{ deployment_id }}"
+  - set_fact:
+      deploy_id: "{{ deployment_id.stdout | from_json() }}"
+  - debug: msg="{{ deploy_id }}"
