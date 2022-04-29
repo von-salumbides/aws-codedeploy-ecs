@@ -18,90 +18,90 @@
   - name: 1.4 -- Push ECR image in
     shell: docker push "{{ aws_account }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ aws_project }}-{{ service }}-{{ aws_env }}:{{ branch_tag }}"
 
-  # - name: 1.5 -- Look up ECS Task Definition in {{ aws_env | upper }}
-  #   shell: aws ecs list-task-definitions \
-  #         --family-prefix "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
-  #         --region "{{ aws_region }}"
-  #   register: td_details_cmd_out
-  # - set_fact:
-  #     td_details: "{{ td_details_cmd_out.stdout | from_json() }}"
-  # - debug: msg="{{ td_details.taskDefinitionArns[0] }}"
-  #   ignore_errors: yes
+  - name: 1.5 -- Look up ECS Task Definition in {{ aws_env | upper }}
+    shell: aws ecs list-task-definitions \
+          --family-prefix "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
+          --region "{{ aws_region }}"
+    register: td_details_cmd_out
+  - set_fact:
+      td_details: "{{ td_details_cmd_out.stdout | from_json() }}"
+  - debug: msg="{{ td_details.taskDefinitionArns[0] }}"
+    ignore_errors: yes
 
-  # - name: 1.6 -- Deregister ECS Task Definition in {{ aws_env | upper }}
-  #   shell: aws ecs deregister-task-definition \
-  #         --task-definition "{{ td_details.taskDefinitionArns[0] }}" \
-  #         --region "{{ aws_region }}"
-  #   ignore_errors: yes
+  - name: 1.6 -- Deregister ECS Task Definition in {{ aws_env | upper }}
+    shell: aws ecs deregister-task-definition \
+          --task-definition "{{ td_details.taskDefinitionArns[0] }}" \
+          --region "{{ aws_region }}"
+    ignore_errors: yes
 
-  # - name: 1.7 -- Create ECS Task Definition in {{ aws_env | upper }}
-  #   ecs_taskdefinition:
-  #     execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
-  #     task_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
-  #     launch_type: "FARGATE"
-  #     cpu: "{{ cpu_container }}"
-  #     memory: "{{ mem_reserv }}"
-  #     network_mode: "awsvpc"
-  #     containers:
-  #       - name: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
-  #         cpu: "{{ cpu_container }}"
-  #         memoryReservation: "{{ mem_reserv }}"
-  #         essential: true
-  #         image: "{{ aws_account }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ aws_project }}-{{ service }}-{{ aws_env }}:{{ branch_tag }}"
-  #         logConfiguration:
-  #           logDriver: "awslogs"
-  #           options:
-  #             awslogs-group: "/ecs/{{ aws_project }}-{{ service }}-{{ aws_env }}"
-  #             awslogs-create-group: "true"
-  #             awslogs-region: "{{ aws_region }}"
-  #             awslogs-stream-prefix: "{{ aws_project }}-{{ service }}"
-  #         portMappings:
-  #         - containerPort: 80
-  #           protocol: "tcp"
-  #     family: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
-  #     state: "present"
-  #     region: "{{ aws_region }}"
-  #   register: ecs_td_out
-  # - set_fact:
-  #     ecs_taskdefinitionarn: "{{ ecs_td_out.taskdefinition.taskDefinitionArn }}"
-  # - debug: msg="{{ ecs_taskdefinitionarn }}"
-  #   ignore_errors: yes
+  - name: 1.7 -- Create ECS Task Definition in {{ aws_env | upper }}
+    ecs_taskdefinition:
+      execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
+      task_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
+      launch_type: "FARGATE"
+      cpu: "{{ cpu_container }}"
+      memory: "{{ mem_reserv }}"
+      network_mode: "awsvpc"
+      containers:
+        - name: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+          cpu: "{{ cpu_container }}"
+          memoryReservation: "{{ mem_reserv }}"
+          essential: true
+          image: "{{ aws_account }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ aws_project }}-{{ service }}-{{ aws_env }}:{{ branch_tag }}"
+          logConfiguration:
+            logDriver: "awslogs"
+            options:
+              awslogs-group: "/ecs/{{ aws_project }}-{{ service }}-{{ aws_env }}"
+              awslogs-create-group: "true"
+              awslogs-region: "{{ aws_region }}"
+              awslogs-stream-prefix: "{{ aws_project }}-{{ service }}"
+          portMappings:
+          - containerPort: 80
+            protocol: "tcp"
+      family: "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+      state: "present"
+      region: "{{ aws_region }}"
+    register: ecs_td_out
+  - set_fact:
+      ecs_taskdefinitionarn: "{{ ecs_td_out.taskdefinition.taskDefinitionArn }}"
+  - debug: msg="{{ ecs_taskdefinitionarn }}"
+    ignore_errors: yes
   
-  # - name: 1.2 -- Artifact Appspec
-  #   template: src=./codedeploy/appspec.j2 dest=./codedeploy/{{ aws_project }}-{{ service }}.yaml
-  #   delegate_to: localhost
+  - name: 1.2 -- Artifact Appspec
+    template: src=./codedeploy/appspec.j2 dest=./codedeploy/{{ aws_project }}-{{ service }}.yaml
+    delegate_to: localhost
   
-  # - name: 1.3 -- S3 Upload
-  #   shell: aws s3api put-object \
-  #           --bucket "{{ s3_bucket }}" \
-  #           --key ansible/{{ aws_project }}-{{ service }}.yaml \
-  #           --body ./codedeploy/{{ aws_project }}-{{ service }}.yaml
-  # - name: 1.4 -- Remove Appspec Locally
-  #   file: path=./codedeploy/{{ aws_project }}-{{ service }}.yaml state=absent
+  - name: 1.3 -- S3 Upload
+    shell: aws s3api put-object \
+            --bucket "{{ s3_bucket }}" \
+            --key ansible/{{ aws_project }}-{{ service }}.yaml \
+            --body ./codedeploy/{{ aws_project }}-{{ service }}.yaml
+  - name: 1.4 -- Remove Appspec Locally
+    file: path=./codedeploy/{{ aws_project }}-{{ service }}.yaml state=absent
 
-  # - name: 1.5 -- Create Deployment
-  #   shell: aws deploy create-deployment \
-  #           --region "{{ aws_region }}" \
-  #           --application-name "{{ aws_project }}-{{ aws_env }}" \
-  #           --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
-  #           --revision "revisionType=S3,s3Location={bucket={{ s3_bucket }},key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}"
-  #   register: deployment_out
-  # - set_fact:
-  #     deploy_json: "{{ deployment_out.stdout | from_json() }}"
-  # - name: 1.5.1 -- Pause for 1 Minute
-  #   pause:
-  #     minutes: .5
+  - name: 1.5 -- Create Deployment
+    shell: aws deploy create-deployment \
+            --region "{{ aws_region }}" \
+            --application-name "{{ aws_project }}-{{ aws_env }}" \
+            --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
+            --revision "revisionType=S3,s3Location={bucket={{ s3_bucket }},key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}"
+    register: deployment_out
+  - set_fact:
+      deploy_json: "{{ deployment_out.stdout | from_json() }}"
+  - name: 1.5.1 -- Pause for 1 Minute
+    pause:
+      minutes: .5
 
-  # - name: 1.6 -- Wait Deployment
-  #   shell: aws deploy wait deployment-successful --deployment-id "{{ deploy_json.deploymentId }}"
+  - name: 1.6 -- Wait Deployment
+    shell: aws deploy wait deployment-successful --deployment-id "{{ deploy_json.deploymentId }}"
 
-  # - name: 1.7 -- Get Deployment
-  #   shell: aws deploy get-deployment --deployment-id "{{ deploy_json.deploymentId }}"
-  #   register: deployment_status_out
-  # - set_fact:
-  #     deploy_status_json: "{{ deployment_status_out.stdout | from_json() }}"
-  # - name: 1.8 -- Update Desired cpu_container
-  #   shell: aws ecs update-service \
-  #           --cluster "{{ aws_project }}-{{ aws_env }}" \
-  #           --service "{{ aws_project }}-{{ service }}-{{ aws_env }}"
-  #           --desired-count "{{ desired_count }}"
+  - name: 1.7 -- Get Deployment
+    shell: aws deploy get-deployment --deployment-id "{{ deploy_json.deploymentId }}"
+    register: deployment_status_out
+  - set_fact:
+      deploy_status_json: "{{ deployment_status_out.stdout | from_json() }}"
+  - name: 1.8 -- Update Desired cpu_container
+    shell: aws ecs update-service \
+            --cluster "{{ aws_project }}-{{ aws_env }}" \
+            --service "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+            --desired-count "{{ desired_count }}"
