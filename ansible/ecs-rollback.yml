@@ -59,6 +59,6 @@
   - name: Create Deployment
     shell: aws deploy create-deployment \
             --region "{{ aws_region }}" \
-            --application-name devops-poc \
-            --deployment-group-name devops-poc \
+            --application-name "{{ aws_project }}-{{ aws_env }}" \
+            --deployment-group-name "{{ aws_project }}-{{ service }}-{{ aws_env }}" \
             --revision "revisionType=S3,s3Location={bucket={{ s3_bucket }},key=ansible/{{ aws_project }}-{{ service }}.yaml,bundleType=YAML}"
