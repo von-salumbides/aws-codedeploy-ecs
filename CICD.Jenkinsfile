@@ -17,7 +17,9 @@ pipeline {
       }
     }
     stage("DEPLOY") {
-      println("deploying")
+      steps {
+        println("deploying")
+      }
     }
   }
   post {
