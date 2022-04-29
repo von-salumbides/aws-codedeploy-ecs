@@ -56,6 +56,12 @@
   - name: 1.4 -- Remove Appspec Locally
     file: path=./codedeploy/{{ aws_project }}-{{ service }}.yaml state=absent
 
+  - name: 1.4.1 -- Update service
+    shell: aws ecs update-service \
+            --cluster "{{ aws_project }}-{{ aws_env }}"
+            --service "{{ aws_project }}-{{ service }}-{{ aws_env }}"
+            --desired-count "{{ desired_count }}"
+
   - name: 1.5 -- Create Deployment
     shell: aws deploy create-deployment \
             --region "{{ aws_region }}" \
