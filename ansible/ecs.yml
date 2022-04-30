@@ -36,8 +36,8 @@
 
   - name: 1.7 -- Create ECS Task Definition in {{ aws_env | upper }}
     ecs_taskdefinition:
-      execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
-      task_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ aws_project }}-{{ service }}-role-{{ aws_env }}"
+      execution_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ task_role_name }}"
+      task_role_arn: "arn:aws:iam::{{ aws_account }}:role/{{ exec_role_name }}"
       launch_type: "FARGATE"
       cpu: "{{ cpu_container }}"
       memory: "{{ mem_reserv }}"

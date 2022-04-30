@@ -1,4 +1,6 @@
 aws_region: 'us-east-2'
+task_role_name: "devops-ecs-task-role-poc"
+exec_role_name: "devops-ecs-exec-role-poc"
 service: 'api'
 aws_env: 'poc'
 branch_tag: 'default'
