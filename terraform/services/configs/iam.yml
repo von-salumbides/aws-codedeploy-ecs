@@ -1,6 +1,6 @@
 ecs-task:
  - ecs-tasks
-ecs_exec:
+ecs-exec:
   - ecs-tasks
 codedeploy:
   - codedeploy
