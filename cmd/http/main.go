@@ -10,7 +10,7 @@ import (
 func main() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, DevOps!")
+		return c.String(http.StatusOK, "Hi, DevOps!")
 	})
 	e.GET("/health", Health)
 	e.Logger.Fatal(e.Start(":80"))
