@@ -14,9 +14,9 @@ module "aws_ecs_service" {
   subnet_list                 = var.subnet_list
   app_name                    = module.codedeploy_app.name
   security_groups             = module.security_group_ecs.id
-  task_role_arn               = module.iam_role.arn
-  execution_role_arn          = module.iam_role.arn
-  codedeploy_service_role_arn = module.iam_role.arn
+  task_role_arn               = module.iam_role_tasks.arn
+  execution_role_arn          = module.iam_role_exec.arn
+  codedeploy_service_role_arn = module.iam_role_codedeploy.arn
   prod_traffic_route          = module.lb.listener_80_arn
   test_traffic_route          = module.lb.listener_8080_arn
   target_group_green_arn      = {

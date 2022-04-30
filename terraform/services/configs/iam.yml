@@ -1,3 +1,6 @@
-trust_services:
-  - codedeploy
+ecs-task:
+ - ecs-tasks
+ecs_exec:
   - ecs-tasks
+codedeploy:
+  - codedeploy
