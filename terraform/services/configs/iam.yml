@@ -1,5 +1,3 @@
 trust_services:
-  - ecs
-  - ec2
   - codedeploy
   - ecs-tasks
