@@ -1,6 +1,6 @@
 //SECURITY GROUP(S)
 module "security_group_ecs" {
-  source  = "git::https://github.com/von-salumbides/terraform-module.git//aws-security-group?ref=v0.1.1"
+  source  = "git::https://github.com/von-salumbides/terraform-module.git//aws-security-group?ref=v0.1.2"
   config  = "ECS"
   vpc     = var.vpc
   env     = var.env
@@ -12,7 +12,7 @@ module "security_group_ecs" {
 
 //SECURITY GROUP(S)
 module "security-group-alb" {
-  source        = "git::https://github.com/von-salumbides/terraform-module.git//aws-security-group?ref=v0.1.1"
+  source        = "git::https://github.com/von-salumbides/terraform-module.git//aws-security-group?ref=v0.1.2"
   config        = "ALB"
   vpc           = var.vpc
   env           = var.env
@@ -21,7 +21,7 @@ module "security-group-alb" {
 }
 
 module "lb" {
-  source                     = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-app"
+  source                     = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-app?ref=v0.1.2"
   project                    = var.project
   env                        = var.env
   security_group             = module.security-group-alb.id
@@ -35,7 +35,7 @@ module "lb" {
 }
 
 module "target_group_blue" {
-  source    = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-target-group"
+  source    = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-target-group?ref=v0.1.2"
   project   = var.project
   env       = var.env
   vpc       = var.vpc
@@ -44,7 +44,7 @@ module "target_group_blue" {
 }
 
 module "target_group_green" {
-  source    = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-target-group"
+  source    = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-target-group?ref=v0.1.2"
   project   = var.project
   env       = var.env
   vpc       = var.vpc
@@ -53,7 +53,7 @@ module "target_group_green" {
 }
 
 module "listener_80" {
-  source            = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-listener"
+  source            = "git::https://github.com/von-salumbides/terraform-module.git//aws-lb-listener?ref=v0.1.2"
   port              = 80
   config            = "RULES-GREEN"
   load_balancer_arn = module.lb.arn

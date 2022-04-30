@@ -1,11 +1,11 @@
 module "ecs_cluster" {
-  source  = "git::https://github.com/von-salumbides/terraform-module.git//aws-ecs-cluster"
+  source  = "git::https://github.com/von-salumbides/terraform-module.git//aws-ecs-cluster?ref=v0.1.2"
   project = var.project
   env     = var.env
 }
 
 module "aws_ecs_service" {
-  source                      = "git::https://github.com/von-salumbides/terraform-module.git//aws-ecs-service"
+  source                      = "git::https://github.com/von-salumbides/terraform-module.git//aws-ecs-service?ref=v0.1.2"
   config                      = "ECS"
   env                         = var.env
   project                     = var.project
