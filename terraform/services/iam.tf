@@ -29,5 +29,5 @@ module "iam-policy-codedeploy" {
   aws_service = "codedeploy"
   aws_account = var.aws_account
   aws_region  = var.region
-  iam_role    = [module.iam_role_codedeploy.name,module.iam_role_ecs_tasks.name,module.iam_role_ecs_exec.name]
+  iam_role    = [module.iam_role_codedeploy.name,module.iam_role_tasks.name,module.iam_role_exec.name]
 }
